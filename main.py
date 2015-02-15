@@ -1,7 +1,8 @@
 import xml.dom.minidom
 import sys
+import time
 
-
+start = time.time()
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 with open(input_file, 'r') as in_file:
@@ -59,3 +60,5 @@ for row in distances:
 
 in_file.close()
 ans_file.close()
+finish = time.time()
+print(finish - start)
