@@ -1,8 +1,9 @@
 import xml.dom.minidom
 import sys
 import time
+from copy import deepcopy
+from fastgraph import Fast_Floyd
 
-start = time.time()
 input_file = sys.argv[1]
 output_file = sys.argv[2]
 with open(input_file, 'r') as in_file:
@@ -34,6 +35,10 @@ for element in electrical_elements:
         distances[endv][startv] = 1 / (1 / distances[endv][startv] +
                                        1 / rev_resistance)
 
+distances_c = deepcopy(distances)
+
+start_py = time.time()
+
 for k in range(0, num_of_vertices):
     for i in range(0, num_of_vertices):
         for j in range(0, num_of_vertices):
@@ -52,6 +57,13 @@ for k in range(0, num_of_vertices):
                 except ZeroDivisionError:
                     distances[i][j] = float('Inf')
 
+
+finish_py = time.time()
+
+start_c = time.time()
+distances_c = Fast_Floyd(distances_c)
+finish_c = time.time()
+
 ans_file = open(output_file, 'w')
 for row in distances:
     for column in row:
@@ -60,5 +72,4 @@ for row in distances:
 
 in_file.close()
 ans_file.close()
-finish = time.time()
-print(finish - start)
+print((finish_py - start_py) / (finish_c - start_c))
